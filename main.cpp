@@ -53,10 +53,50 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
     bool active = true;
     SDL_Event sdlEvent;
-    auto matrix = Matrix::getRotationMatrixY(-45);
+
+
+
+    // Wat kunnen we doen:
+        // verplaats naar 0,0
+        // rotate
+        // verplaats naar
+
+
+
+
+
+    // Calculate average of points in cube (center)
+    double totalX = 0;
+    double totalY = 0;
+    double totalZ = 0;
+
+    for(auto& point : points){
+        totalX += point.x;
+        totalY += point.y;
+        totalZ += point.z;
+    }
+
+    Vector3 center = Vector3(totalX/points.size(), totalY/points.size(), totalZ/points.size());
+
+    auto matrix = Matrix::getTranslationMatrix(-center.x, -center.y, -center.z);
 
     for(auto& point : points){
         point.Transform(matrix);
+    }
+
+
+
+
+    auto matrixx = Matrix::getRotationMatrixY(45);
+
+    for(auto& point : points){
+        point.Transform(matrixx);
+    }
+
+    auto matrixxx = Matrix::getTranslationMatrix(0,0,-60);
+
+    for(auto& point : points){
+        point.Transform(matrixxx);
     }
 
 
