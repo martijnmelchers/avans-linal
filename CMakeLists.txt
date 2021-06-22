@@ -1,0 +1,29 @@
+cmake_minimum_required(VERSION 3.17)
+set(CMAKE_CXX_STANDARD 17)
+
+add_definitions("-DMUSIC_WAV")
+
+set(CMAKE_CURRENT_BINARY_DIR ./build)
+set(CMAKE_CURRENT_SOURCE_DIR .)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+
+set(SDL2_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Libraries/SDL)
+
+
+project(linalg)
+
+add_subdirectory(${SDL2_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}/sdl)
+
+add_executable(linalg ./main.cpp Math/Vector.h Math/Vector3.cpp Math/Vector3.h Math/Line.cpp Math/Line.h Math/Matrix.cpp Math/Matrix.h)
+
+target_link_libraries(linalg SDL2)
+
+target_include_directories(linalg PUBLIC
+        ${SDL2_SOURCE_DIR}/include
+        ${SDL2_MIXER_SOURCE_DIR}/include
+        ${SDL2IMAGE_SOURCE_DIR}
+        ${SDL2TTF_SOURCE_DIR})
+
+
+
