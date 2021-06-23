@@ -2,6 +2,7 @@
 // Created by sasch on 22/06/2021.
 //
 
+#include <cmath>
 #include "Vector3.h"
 
 Vector3 Vector3::operator+(const Vector3 &a) const {
@@ -27,4 +28,11 @@ void Vector3::Transform(Matrix &m) {
     x = nx;
     y = ny;
     z = nz;
+}
+
+void Vector3::Normalize() {
+    const double length = sqrt(pow(x, 2) + pow(y,2) + pow(z, 2));
+    x = x / length;
+    y = y / length;
+    z = z / length;
 }

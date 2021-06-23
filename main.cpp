@@ -10,6 +10,7 @@
 #include "Math/Vector3.h"
 #include "Math/Line.h"
 #include "Math/Matrix.h"
+#include "Objects/SpaceShip.h"
 
 
 int WINAPI WinMain(HINSTANCE hInstance,
@@ -35,20 +36,10 @@ int WINAPI WinMain(HINSTANCE hInstance,
     std::vector<Vector3> points;
 
 
-    // Cube from example.
-    points.emplace_back(Vector3(10, 10, -50));
-    points.emplace_back(Vector3(10, 10, -70));
-    points.emplace_back(Vector3(-10, 10,-70));
-    points.emplace_back(Vector3(-10, 10,-50));
 
-    points.emplace_back(Vector3(10, -10, -50));
-    points.emplace_back(Vector3(10, -10, -70));
-    points.emplace_back(Vector3(-10, -10, -70));
-    points.emplace_back(Vector3(-10, -10, -50));
+    auto spaceShip = SpaceShip();
 
 
-
-    std::vector<Line> lines;
 
 
     bool active = true;
@@ -56,62 +47,12 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
 
 
-    // Wat kunnen we doen:
-        // verplaats naar 0,0
-        // rotate
-        // verplaats naar
 
+    auto center = spaceShip.Center();
+    auto up = Vector3(0,1,0);
+    auto matrix = Matrix::getRotationMatrix(up, center, 75);
+    spaceShip.transform(matrix);
 
-
-
-
-    // Calculate average of points in cube (center)
-    double totalX = 0;
-    double totalY = 0;
-    double totalZ = 0;
-
-    for(auto& point : points){
-        totalX += point.x;
-        totalY += point.y;
-        totalZ += point.z;
-    }
-
-    Vector3 center = Vector3(totalX/points.size(), totalY/points.size(), totalZ/points.size());
-
-    auto matrix = Matrix::getTranslationMatrix(-center.x, -center.y, -center.z);
-
-    for(auto& point : points){
-        point.Transform(matrix);
-    }
-
-
-
-
-    auto matrixx = Matrix::getRotationMatrixY(45);
-
-    for(auto& point : points){
-        point.Transform(matrixx);
-    }
-
-    auto matrixxx = Matrix::getTranslationMatrix(0,0,-60);
-
-    for(auto& point : points){
-        point.Transform(matrixxx);
-    }
-
-
-    lines.emplace_back(Line(points[0], points[1]));
-    lines.emplace_back(Line(points[1], points[2]));
-    lines.emplace_back(Line(points[2], points[3]));
-    lines.emplace_back(Line(points[3], points[0]));
-    lines.emplace_back(Line(points[0], points[4]));
-    lines.emplace_back(Line(points[1], points[5]));
-    lines.emplace_back(Line(points[2], points[6]));
-    lines.emplace_back(Line(points[3], points[7]));
-    lines.emplace_back(Line(points[4], points[5]));
-    lines.emplace_back(Line(points[5], points[6]));
-    lines.emplace_back(Line(points[6], points[7]));
-    lines.emplace_back(Line(points[7], points[4]));
 
     while(active){
         SDL_PollEvent(&sdlEvent);
@@ -134,23 +75,10 @@ int WINAPI WinMain(HINSTANCE hInstance,
         int nulpuntCanvasX = 800/2;
         int nulpuntCanvasY = 800/2;
 
-        for(auto& line: lines){
-            if(line.start.z < 0 && line.end.z < 0){
-                int startX = line.start.x/-line.start.z*200;
-                int startY = line.start.y/-line.start.z*200;
-                int endX = line.end.x/-line.end.z*200;
-                int endY = line.end.y/-line.end.z*200;
-
-                SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-                SDL_RenderDrawLine(renderer, nulpuntCanvasX + startX, nulpuntCanvasY - startY, nulpuntCanvasX + endX, nulpuntCanvasY - endY);
-            }
-        }
-
+        spaceShip.draw(renderer);
 
         SDL_RenderPresent(renderer);
     }
-
-
 
     SDL_DestroyWindow(window);
     SDL_Quit();

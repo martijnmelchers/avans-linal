@@ -15,7 +15,7 @@ project(linalg)
 
 add_subdirectory(${SDL2_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}/sdl)
 
-add_executable(linalg ./main.cpp Math/Vector.h Math/Vector3.cpp Math/Vector3.h Math/Line.cpp Math/Line.h Math/Matrix.cpp Math/Matrix.h)
+add_executable(linalg ./main.cpp  Math/Line.cpp Math/Line.h Math/Matrix.cpp Math/Matrix.h Math/Vector3.h Math/Vector3.cpp Objects/Transform.cpp Objects/Transform.h Objects/SpaceShip.cpp Objects/SpaceShip.h)
 
 target_link_libraries(linalg SDL2)
 

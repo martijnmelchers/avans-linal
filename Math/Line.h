@@ -10,8 +10,8 @@
 
 class Line {
 public:
-    Vector3 start;
-    Vector3 end;
+    Vector3& start;
+    Vector3& end;
 
 public:
     Line(Vector3 &start, Vector3& end);
