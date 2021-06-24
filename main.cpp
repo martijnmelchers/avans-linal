@@ -11,7 +11,7 @@
 #include "Math/Line.h"
 #include "Math/Matrix.h"
 #include "Objects/SpaceShip.h"
-
+#include "windows.h"
 
 int WINAPI WinMain(HINSTANCE hInstance,
                    HINSTANCE hPrevInstance,
@@ -24,8 +24,8 @@ int WINAPI WinMain(HINSTANCE hInstance,
             "SDL2Test",
             SDL_WINDOWPOS_UNDEFINED,
             SDL_WINDOWPOS_UNDEFINED,
-            800,
-            800,
+            600,
+            600,
             0
     );
 
@@ -33,14 +33,8 @@ int WINAPI WinMain(HINSTANCE hInstance,
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
-    std::vector<Vector3> points;
-
-
 
     auto spaceShip = SpaceShip();
-
-
-
 
     bool active = true;
     SDL_Event sdlEvent;
@@ -48,10 +42,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
 
 
-    auto center = spaceShip.Center();
-    auto up = Vector3(0,1,0);
-    auto matrix = Matrix::getRotationMatrix(up, center, 75);
-    spaceShip.transform(matrix);
+
 
 
     while(active){
@@ -71,9 +62,14 @@ int WINAPI WinMain(HINSTANCE hInstance,
                 break;
         }
 
+        Sleep(10);
 
-        int nulpuntCanvasX = 800/2;
-        int nulpuntCanvasY = 800/2;
+
+        auto center = spaceShip.Center();
+        auto up = Vector3(0,1,0);
+        auto matrix = Matrix::getRotationMatrix(up, center, 1);
+
+        spaceShip.transform(matrix);
 
         spaceShip.draw(renderer);
 

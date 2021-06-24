@@ -27,6 +27,7 @@ public:
     static Matrix getRotationMatrixM2(Vector3 &axis);
     static Matrix getRotationMatrixM4(Vector3 &axis);
     static Matrix getRotationMatrixM5(Vector3 &axis);
+    static Matrix getPerspectiveMatrix(double far, double near, double scale);
 
     static Matrix getRotationMatrix(Vector3 &axis, Vector3 &center, const double angle);
 

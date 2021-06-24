@@ -278,5 +278,16 @@ Matrix Matrix::getRotationMatrixX(double degrees) {
     return newMatrix;
 }
 
+Matrix Matrix::getPerspectiveMatrix(double far, double near, double scale) {
+    double perspectiveMatrix[4][4];
+
+    perspectiveMatrix[0][0] = scale; perspectiveMatrix[0][1] = 0;     perspectiveMatrix[0][2] = 0;                      perspectiveMatrix[0][3] = 0;
+    perspectiveMatrix[1][0] = 0;     perspectiveMatrix[1][1] = scale; perspectiveMatrix[1][2] = 0;                      perspectiveMatrix[1][3] = 0;
+    perspectiveMatrix[2][0] = 0;     perspectiveMatrix[2][1] = 0;     perspectiveMatrix[2][2] = -far/(far-near);        perspectiveMatrix[2][3] = -1;
+    perspectiveMatrix[3][0] = 0;     perspectiveMatrix[3][1] = 0;     perspectiveMatrix[3][2] = -(far*near)/(far-near); perspectiveMatrix[3][3] = 0;
+
+    return Matrix(perspectiveMatrix);
+}
+
 
 

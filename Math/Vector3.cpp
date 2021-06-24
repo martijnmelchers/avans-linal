@@ -9,25 +9,26 @@ Vector3 Vector3::operator+(const Vector3 &a) const {
     return Vector3(x + a.x, y + a.y, z + a.z);
 }
 
-Vector3 Vector3::operator*(const int &a) const {
+Vector3 Vector3::operator*(const double &a) const {
     return Vector3(x * a, y * a, z * a);
 }
 
-Vector3 Vector3::operator-(const int &a) const {
+Vector3 Vector3::operator-(const double &a) const {
     return Vector3(x - a, y - a, z -a );
 }
-Vector3::Vector3(int x, int y, int z) : x(x), y(y), z(z){
-
+Vector3::Vector3(double x, double y, double z) : x(x), y(y), z(z){
+    w = 1;
 }
 
 void Vector3::Transform(Matrix &m) {
-    double nx = m.matrix[0][0]*x + m.matrix[0][1]*y + m.matrix[0][2]*z + m.matrix[0][3] * 1;
-    double ny = m.matrix[1][0]*x + m.matrix[1][1]*y + m.matrix[1][2]*z + m.matrix[1][3] * 1;
-    double nz = m.matrix[2][0]*x + m.matrix[2][1]*y + m.matrix[2][2]*z + m.matrix[2][3] * 1;
-
+    double nx = m.matrix[0][0]*x + m.matrix[0][1]*y + m.matrix[0][2]*z + m.matrix[0][3] *w;
+    double ny = m.matrix[1][0]*x + m.matrix[1][1]*y + m.matrix[1][2]*z + m.matrix[1][3] * w;
+    double nz = m.matrix[2][0]*x + m.matrix[2][1]*y + m.matrix[2][2]*z + m.matrix[2][3] * w;
+    double nw = m.matrix[3][0]*x + m.matrix[3][1]*y + m.matrix[3][2]*z + m.matrix[3][3] * w;
     x = nx;
     y = ny;
     z = nz;
+    w = nw;
 }
 
 void Vector3::Normalize() {
@@ -35,4 +36,17 @@ void Vector3::Normalize() {
     x = x / length;
     y = y / length;
     z = z / length;
+}
+
+Vector3 Vector3::GetPerspective(Matrix perspectiveMatrix) const {
+    double nx = perspectiveMatrix.matrix[0][0]*x + perspectiveMatrix.matrix[0][1]*y + perspectiveMatrix.matrix[0][2]*z + perspectiveMatrix.matrix[0][3] * w;
+    double ny = perspectiveMatrix.matrix[1][0]*x + perspectiveMatrix.matrix[1][1]*y + perspectiveMatrix.matrix[1][2]*z + perspectiveMatrix.matrix[1][3] * w;
+    double nz = perspectiveMatrix.matrix[2][0]*x + perspectiveMatrix.matrix[2][1]*y + perspectiveMatrix.matrix[2][2]*z + perspectiveMatrix.matrix[2][3] * w;
+    double nw = perspectiveMatrix.matrix[3][0]*x + perspectiveMatrix.matrix[3][1]*y + perspectiveMatrix.matrix[3][2]*z + perspectiveMatrix.matrix[3][3] * w;
+
+    return Vector3(nx, ny, nz, nw);
+}
+
+Vector3::Vector3(double x, double y, double z, double w) : x(x), y(y), z(z), w(w){
+
 }
