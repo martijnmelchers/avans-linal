@@ -50,3 +50,33 @@ Vector3 Vector3::GetPerspective(Matrix perspectiveMatrix) const {
 Vector3::Vector3(double x, double y, double z, double w) : x(x), y(y), z(z), w(w){
 
 }
+
+
+// Calculate Dot product from current vector and the given.
+double Vector3::DotProduct(Vector3 &m) const {
+        double x = x * m.x + y * m.y + z * m.z;
+
+        double aLength = (pow(x, 2) + pow(y, 2) + pow(z, 2));
+        double bLength = (pow(m.x, 2) + pow(m.y, 2) + pow(m.z, 2));
+
+        double ab = sqrt(aLength + bLength);
+
+        double angle = acos(ab) / 180.0 * M_PI;
+        return angle;
+}
+
+Vector3 Vector3::CrossProduct(Vector3 &w) const {
+    double nx, ny, nz;
+    nx = y * w.z - z * w.y;
+    ny = z * w.x - x * w.z;
+    nz = x * w.y - y * w.x;
+    return Vector3(nx, ny, nz);
+}
+
+Vector3 Vector3::operator-(const Vector3 &a) const {
+    return Vector3(x - a.x, y - a.y, z - a.z);
+}
+
+Vector3 Vector3::operator*(const Vector3 &a) const {
+    return Vector3(x * a.x, y * a.y, z * a.z);
+}

@@ -23,7 +23,7 @@ void Transform::draw(SDL_Renderer* renderer) {
 
     double near = 0.1;
     double far = 10000.0;
-    double fovY = 61;
+    double fovY = 3;
     double scale = near * tan(fovY*0.5);
 
 

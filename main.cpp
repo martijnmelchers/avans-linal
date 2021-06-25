@@ -12,6 +12,7 @@
 #include "Math/Matrix.h"
 #include "Objects/SpaceShip.h"
 #include "windows.h"
+#include "Objects/Camera.h"
 
 int WINAPI WinMain(HINSTANCE hInstance,
                    HINSTANCE hPrevInstance,
@@ -35,11 +36,10 @@ int WINAPI WinMain(HINSTANCE hInstance,
     SDL_RenderPresent(renderer);
 
     auto spaceShip = SpaceShip();
+    auto camera = Camera(Vector3(0,0,0), Vector3(0,0,-1));
 
     bool active = true;
     SDL_Event sdlEvent;
-
-
 
 
 
@@ -55,21 +55,80 @@ int WINAPI WinMain(HINSTANCE hInstance,
             case SDL_QUIT:
                 active = false;
                 break;
+
             case SDL_KEYDOWN:
                 printf("Key down!\n");
-                break;
+                switch( sdlEvent.key.keysym.sym ){
+                    case SDLK_LEFT:
+                    {
+                        auto m = Matrix::getTranslationMatrix(-0.001,0,0);
+                        camera.eye.Transform(m);
+                        camera.lookAt.Transform(m);
+                        break;
+                    }
+
+
+                    case SDLK_RIGHT:{
+                        auto m = Matrix::getTranslationMatrix(0.001,0,0);
+                        camera.eye.Transform(m);
+                        camera.lookAt.Transform(m);
+                        break;
+                    }
+
+                    case SDLK_UP:{
+                        auto m = Matrix::getTranslationMatrix(0,0.001,0);
+                        camera.eye.Transform(m);
+                        camera.lookAt.Transform(m);
+                        break;
+                    }
+
+                    case SDLK_DOWN:{
+                        auto m = Matrix::getTranslationMatrix(0,-0.001,0);
+                        camera.eye.Transform(m);
+                        camera.lookAt.Transform(m);
+                        break;
+                    }
+
+                    case SDLK_q:{
+                        auto m = Matrix::getRotationMatrix(camera.up, camera.eye, 0.01);
+                        camera.lookAt.Transform(m);
+                        break;
+                    }
+
+
+                    case SDLK_e:{
+                        auto m = Matrix::getRotationMatrix(camera.up, camera.eye, -0.01);
+                        camera.lookAt.Transform(m);
+                        break;
+                    }
+
+                    case SDLK_0:{
+                        auto m = Matrix::getTranslationMatrix(0,0,0.001);
+                        camera.eye.Transform(m);
+                        break;
+                    }
+
+                    case SDLK_1:{
+                        auto m = Matrix::getTranslationMatrix(0,0,-0.001);
+                        camera.eye.Transform(m);
+                        break;
+                    }
+
+                    default:
+                        break;
+                }
             default:
                 break;
         }
 
+
         Sleep(10);
 
 
-        auto center = spaceShip.Center();
-        auto up = Vector3(0,1,0);
-        auto matrix = Matrix::getRotationMatrix(up, center, 1);
+        auto matrix = camera.getCameraTMatrix();
 
         spaceShip.transform(matrix);
+
 
         spaceShip.draw(renderer);
 

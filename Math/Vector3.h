@@ -11,11 +11,15 @@ public:
     Vector3(double x, double y, double z);
     Vector3(double x, double y, double z, double w);
     Vector3 operator+(const Vector3 &a) const;
+    Vector3 operator*(const Vector3 &a) const;
     Vector3 operator* (const double &a) const;
     Vector3 operator- (const double &a) const;
+    Vector3 operator- (const Vector3 &a) const;
     void Normalize();
     void Transform(Matrix &m);
     Vector3 GetPerspective(Matrix perspectiveMatrix) const;
+    double DotProduct(Vector3 &m) const;
+    Vector3 CrossProduct(Vector3 &w) const;
 };
 
 

@@ -289,5 +289,15 @@ Matrix Matrix::getPerspectiveMatrix(double far, double near, double scale) {
     return Matrix(perspectiveMatrix);
 }
 
+Matrix Matrix::getCameraMatrix(const Vector3 &right, const Vector3 &up, const Vector3 &direction) {
+    double newMatrix[4][4];
+    newMatrix[0][0] = right.x;      newMatrix[0][1] = right.y;      newMatrix[0][2] = right.z;     newMatrix[0][3] = 0;
+    newMatrix[1][0] = up.x;         newMatrix[1][1] = up.y;         newMatrix[1][2] = up.z;        newMatrix[1][3] = 0;
+    newMatrix[2][0] = direction.x;  newMatrix[2][1] = direction.y;  newMatrix[2][2] = direction.z; newMatrix[2][3] = 0;
+    newMatrix[3][0] = 0;            newMatrix[3][1] = 0;            newMatrix[3][2] = 0;           newMatrix[3][3] = 1;
+
+    return Matrix(newMatrix);
+}
+
 
 
