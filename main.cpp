@@ -36,102 +36,162 @@ int WINAPI WinMain(HINSTANCE hInstance,
     SDL_RenderPresent(renderer);
 
     auto spaceShip = SpaceShip();
-    auto camera = Camera(Vector3(0,0,0), Vector3(0,0,-1));
+
+    std::vector<Transform*> objects = {&spaceShip};
 
     bool active = true;
     SDL_Event sdlEvent;
 
+    auto camera = Camera(Vector3(0,0,0), Vector3(0,0,-1));
 
-
-
+    Matrix cameraMatrixMan = Matrix();
 
     while(active){
-        SDL_PollEvent(&sdlEvent);
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+        SDL_SetRenderDrawColor(renderer, 0,0 , 0, SDL_ALPHA_OPAQUE);
         SDL_RenderClear(renderer);
+        bool inputEnabled = false;
 
-        switch (sdlEvent.type)
-        {
-            case SDL_QUIT:
-                active = false;
-                break;
 
-            case SDL_KEYDOWN:
-                printf("Key down!\n");
-                switch( sdlEvent.key.keysym.sym ){
-                    case SDLK_LEFT:
-                    {
-                        auto m = Matrix::getTranslationMatrix(-0.001,0,0);
-                        camera.eye.Transform(m);
-                        camera.lookAt.Transform(m);
-                        break;
+        while (SDL_PollEvent(&sdlEvent)) {
+
+
+            //TODO: Move controls
+            switch (sdlEvent.type)
+            {
+                case SDL_QUIT:
+                    active = false;
+                    break;
+
+                case SDL_KEYDOWN:
+                    switch( sdlEvent.key.keysym.sym ){
+                        case SDLK_LEFT:
+                        {
+                            cameraMatrixMan = Matrix::getTranslationMatrix(1,0,0);
+                            inputEnabled = true;
+                            break;
+                        }
+
+
+                        case SDLK_RIGHT:{
+                            cameraMatrixMan = Matrix::getTranslationMatrix(-1,0,0);
+                            inputEnabled = true;
+                            break;
+                        }
+
+                        case SDLK_UP:{
+                            cameraMatrixMan = Matrix::getTranslationMatrix(0,0,-1);
+                            inputEnabled = true;
+                            break;
+                        }
+
+                        case SDLK_DOWN:{
+                            cameraMatrixMan = Matrix::getTranslationMatrix(0,0,1);
+                            inputEnabled = true;
+                            break;
+                        }
+
+                        case SDLK_PAGEUP:{
+                            cameraMatrixMan = Matrix::getTranslationMatrix(0,-1,0);
+                            inputEnabled = true;
+                            break;
+                        }
+
+
+                        case SDLK_DELETE:{
+                            std::cout << camera.eye.x << ", " << camera.eye.y << ", " << camera.eye.z << std::endl;
+                            std::cout << camera.lookAt.x << ", " << camera.lookAt.y << ", " << camera.lookAt.z << std::endl;
+                            break;
+                        }
+
+                        case SDLK_PAGEDOWN:{
+                            camera.lookAt.y += 0.001;
+                            camera.eye.y+= 0.001;
+                            inputEnabled = true;
+                            break;
+                        }
+
+
+                        case SDLK_LSHIFT:{
+                            auto m = Matrix::getTranslationMatrix(0,0,-1);
+                            spaceShip.transform(m);
+                            break;
+                        }
+
+                        case SDLK_q:{
+
+                            auto axis =Vector3(0,0,1);
+                            auto center = spaceShip.Center();
+                            auto m = Matrix::getRotationMatrix(axis,center, 2);
+                            spaceShip.transform(m);
+                            break;
+                        }
+
+                        case SDLK_e:{
+
+                            auto axis =Vector3(0,0,-1);
+                            auto center = spaceShip.Center();
+                            auto m = Matrix::getRotationMatrix(axis,center, 2);
+                            spaceShip.transform(m);
+                            break;
+                        }
+
+
+                        case SDLK_w:{
+
+                            auto axis =Vector3(1,0,0);
+                            auto center = spaceShip.Center();
+                            auto m = Matrix::getRotationMatrix(axis,center, 2);
+                            spaceShip.transform(m);
+                            break;
+                        }
+
+                        case SDLK_s:{
+                            auto axis =Vector3(-1,0,0);
+                            auto center = spaceShip.Center();
+                            auto m = Matrix::getRotationMatrix(axis,center, 2);
+                            spaceShip.transform(m);
+                            break;
+                        }
+
+                        case SDLK_a:{
+
+                            auto axis =Vector3(0,1,0);
+                            auto center = spaceShip.Center();
+                            auto m = Matrix::getRotationMatrix(axis,center, 2);
+                            spaceShip.transform(m);
+                            break;
+                        }
+
+                        case SDLK_d:{
+
+                            auto axis =Vector3(0,-1,0);
+                            auto center = spaceShip.Center();
+                            auto m = Matrix::getRotationMatrix(axis,center, 2);
+                            spaceShip.transform(m);
+                            break;
+                        }
+
+                        default:
+                            break;
                     }
-
-
-                    case SDLK_RIGHT:{
-                        auto m = Matrix::getTranslationMatrix(0.001,0,0);
-                        camera.eye.Transform(m);
-                        camera.lookAt.Transform(m);
-                        break;
-                    }
-
-                    case SDLK_UP:{
-                        auto m = Matrix::getTranslationMatrix(0,0.001,0);
-                        camera.eye.Transform(m);
-                        camera.lookAt.Transform(m);
-                        break;
-                    }
-
-                    case SDLK_DOWN:{
-                        auto m = Matrix::getTranslationMatrix(0,-0.001,0);
-                        camera.eye.Transform(m);
-                        camera.lookAt.Transform(m);
-                        break;
-                    }
-
-                    case SDLK_q:{
-                        auto m = Matrix::getRotationMatrix(camera.up, camera.eye, 0.01);
-                        camera.lookAt.Transform(m);
-                        break;
-                    }
-
-
-                    case SDLK_e:{
-                        auto m = Matrix::getRotationMatrix(camera.up, camera.eye, -0.01);
-                        camera.lookAt.Transform(m);
-                        break;
-                    }
-
-                    case SDLK_0:{
-                        auto m = Matrix::getTranslationMatrix(0,0,0.001);
-                        camera.eye.Transform(m);
-                        break;
-                    }
-
-                    case SDLK_1:{
-                        auto m = Matrix::getTranslationMatrix(0,0,-0.001);
-                        camera.eye.Transform(m);
-                        break;
-                    }
-
-                    default:
-                        break;
-                }
-            default:
-                break;
+                default:
+                    break;
+            }
         }
 
+        if(inputEnabled){
+            camera.eye = Vector3(0,0,0);
+            camera.lookAt = Vector3(0,0,-1);
+            camera.eye.Transform(cameraMatrixMan);
+            camera.lookAt.Transform(cameraMatrixMan);
+        }
 
-        Sleep(10);
-
-
-        auto matrix = camera.getCameraTMatrix();
-
-        spaceShip.transform(matrix);
-
-
-        spaceShip.draw(renderer);
-
+        for(auto* transform : objects){
+            if(inputEnabled){
+                transform->transform(camera.getCameraTMatrix());
+            }
+            transform->draw(renderer);
+        }
         SDL_RenderPresent(renderer);
     }
 

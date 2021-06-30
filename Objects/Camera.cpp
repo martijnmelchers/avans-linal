@@ -16,16 +16,16 @@ Matrix Camera::getCameraTMatrix() {
     // Normaliseer alles voor de transformatie.
 
 
-    direction = eye - lookAt;
-    right = up.CrossProduct(direction);
-    up = direction.CrossProduct(right);
 
-    direction.Normalize();
-    right.Normalize();
-    up.Normalize();
+    auto dir = eye - lookAt;
+    dir.Normalize();
+    auto ri  = up.CrossProduct(dir);
+    ri.Normalize();
+    auto upN = dir.CrossProduct(ri);
+    upN.Normalize();
 
     auto origin = Matrix::getTranslationMatrix(-eye.x, -eye.y, -eye.z);
-    auto tMatrix = Matrix::getCameraMatrix(right, up, direction);
+    auto tMatrix = Matrix::getCameraMatrix(ri, upN, dir);
 
     return (origin * tMatrix);
 }

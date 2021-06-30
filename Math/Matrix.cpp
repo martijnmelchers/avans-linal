@@ -299,5 +299,9 @@ Matrix Matrix::getCameraMatrix(const Vector3 &right, const Vector3 &up, const Ve
     return Matrix(newMatrix);
 }
 
+Matrix::Matrix() {
+
+}
+
 
 

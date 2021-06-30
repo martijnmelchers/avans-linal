@@ -17,7 +17,7 @@ protected:
     Line* right;
 public:
     Transform();
-    void transform(Matrix &m);
+    void transform(const Matrix &m);
     void draw(SDL_Renderer* renderer);
     virtual void Update(double dt) = 0;
     Vector3 Center();

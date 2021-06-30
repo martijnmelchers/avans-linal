@@ -6,7 +6,7 @@
 #include <SDL.h>
 #include <cmath>
 
-void Transform::transform(Matrix &m) {
+void Transform::transform(const Matrix &m) {
     for(auto & vert : verts){
         vert.Transform(m);
     }
@@ -22,10 +22,12 @@ void Transform::draw(SDL_Renderer* renderer) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
 
     double near = 0.1;
-    double far = 10000.0;
-    double fovY = 3;
-    double scale = near * tan(fovY*0.5);
+    double far = 100.0;
+    double fovY = -120;
 
+
+
+    double scale = tan(fovY * 0.5 * M_PI / 180) * near;
 
 
     for(auto& line: lines){
@@ -35,10 +37,18 @@ void Transform::draw(SDL_Renderer* renderer) {
         auto endP = line.end.GetPerspective(perspective);
 
         if((startP.w) > 0 && (endP.w > 0)){
-            int startX = int(startP.x/startP.w*600/startP.w);
-            int startY = int(startP.y/startP.w*600/startP.w);
-            int endX = int(endP.x/endP.w*600/endP.w);
-            int endY = int(endP.y/endP.w*600/endP.w);
+
+            int startX = int((startP.x) / startP.w * nulpuntCanvasX);
+            int startY = int((startP.y) / startP.w *  nulpuntCanvasY);
+            int endX = int((endP.x) / endP.w * nulpuntCanvasX);
+            int endY = int((endP.y) / endP.w * nulpuntCanvasY);
+
+
+
+//            int startX = int(startP.x/startP.w*600/startP.w);
+//            int startY = int(startP.y/startP.w*600/startP.w);
+//            int endX = int(endP.x/endP.w*600/endP.w);
+//            int endY = int(endP.y/endP.w*600/endP.w);
 
             SDL_RenderDrawLine(renderer, nulpuntCanvasX + startX, nulpuntCanvasY - startY, nulpuntCanvasX + endX, nulpuntCanvasY - endY);
         }
