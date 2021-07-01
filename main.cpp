@@ -13,6 +13,7 @@
 #include "Objects/SpaceShip.h"
 #include "Objects/Camera.h"
 #include "Objects/Enemy.h"
+#include "Objects/Bullet.h"
 
 
 int WINAPI WinMain(HINSTANCE hInstance,
@@ -46,10 +47,9 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
     auto camera = Camera(Vector3(0, 0, 0), Vector3(0, 0, -1));
 
-    Matrix cameraMatrixMan = Matrix();
-
     UINT NOW = SDL_GetPerformanceCounter();
     UINT LAST = 0;
+
     double deltaTime = 0;
     while (active) {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
@@ -59,21 +59,30 @@ int WINAPI WinMain(HINSTANCE hInstance,
         NOW = SDL_GetPerformanceCounter();
         deltaTime = ((NOW - LAST) * 1000 / (double) SDL_GetPerformanceFrequency());
 
+        double matrixone[4][4];
+        matrixone[0][0] = 1; matrixone[0][1] = 0; matrixone[0][2] = 0; matrixone[0][3] = 0;
+        matrixone[1][0] = 0;   matrixone[1][1] = 1;   matrixone[1][2] = 0;  matrixone[1][3] = 0;
+        matrixone[2][0] = 0;  matrixone[2][1] = 0;  matrixone[2][2] = 1;   matrixone[2][3] = 0;
+        matrixone[3][0] = 0; matrixone[3][1] = 0; matrixone[3][2] = 0;matrixone[3][3] = 1;
+
+        auto cameraMatrixMan = Matrix(matrixone);
         while (SDL_PollEvent(&sdlEvent)) {
             //TODO: Move controls
+
+
             switch (sdlEvent.type) {
                 case SDL_QUIT:
                     active = false;
                     break;
 
                 case SDL_KEYDOWN:
+                    std::cout << sdlEvent.key.keysym.sym << std::endl;
                     switch (sdlEvent.key.keysym.sym) {
                         case SDLK_LEFT: {
                             cameraMatrixMan = Matrix::getTranslationMatrix(1, 0, 0);
                             inputEnabled = true;
                             break;
                         }
-
 
                         case SDLK_RIGHT: {
                             cameraMatrixMan = Matrix::getTranslationMatrix(-1, 0, 0);
@@ -108,8 +117,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
                         }
 
                         case SDLK_PAGEDOWN: {
-                            camera.lookAt.y += 0.001;
-                            camera.eye.y += 0.001;
+                            cameraMatrixMan = Matrix::getTranslationMatrix(0, 1, 0);
                             inputEnabled = true;
                             break;
                         }
@@ -140,7 +148,6 @@ int WINAPI WinMain(HINSTANCE hInstance,
                             break;
                         }
 
-
                         case SDLK_w: {
 
                             auto axis = Vector3(1, 0, 0);
@@ -166,6 +173,11 @@ int WINAPI WinMain(HINSTANCE hInstance,
                             spaceShip.transform(m);
                             break;
                         }
+                        case SDLK_0: {
+                            auto* bullet = new Bullet(spaceShip.Center(), spaceShip.Forward(), enemy);
+                            objects.emplace_back(bullet);
+                            break;
+                        }
 
                         case SDLK_d: {
 
@@ -184,31 +196,59 @@ int WINAPI WinMain(HINSTANCE hInstance,
             }
         }
 
-
-        //TODO: Generate sinewave and scale enemy to it.
-
-
-
-
         //Weird hack, but it werks.
-        if (inputEnabled) {
-            camera.eye = Vector3(0, 0, 0);
-            camera.lookAt = Vector3(0, 0, -1);
+
+
+
+        if(inputEnabled){
+            camera.eye = Vector3(0,0,0);
+            camera.lookAt = Vector3(0,0,-1);
             camera.eye.Transform(cameraMatrixMan);
             camera.lookAt.Transform(cameraMatrixMan);
         }
 
-        for (auto *transform : objects) {
-            if (inputEnabled) {
+
+        for(auto it = objects.begin(); it != objects.end();){
+            Transform* transform = *it;
+
+
+            if(inputEnabled){
                 transform->transform(camera.GetCameraTMatrix());
             }
 
             transform->Update(deltaTime);
+            for(auto* collider : objects){
+                if(collider != transform){
+                    bool collides = Transform::Collides(transform->GetAABB(), collider->GetAABB());
+                    if(collides){
+                        transform->Collide(collider);
+                        collider->Collide(transform);
+                    }
+                }
+            }
+
             transform->draw(renderer);
+
+            if(transform->flagDestroy){
+                if(dynamic_cast<SpaceShip*>(transform) == nullptr){
+                  it = objects.erase(it);
+                }
+                else{
+                    active = true;
+                }
+            }
+            else{
+              it++;
+            }
         }
+
         SDL_RenderPresent(renderer);
     }
 
+    for(Transform* transform : objects){
+        delete transform;
+    }
+    objects.clear();
     SDL_DestroyWindow(window);
     SDL_Quit();
 

@@ -2,7 +2,7 @@
 #include "Vector3.h"
 
 Vector3 Vector3::operator+(const Vector3 &a) const {
-    return Vector3(x + a.x, y + a.y, z + a.z);
+    return Vector3(x + a.x, y + a.y, z + a.z, w + a.w);
 }
 
 Vector3 Vector3::operator*(const double &a) const {
@@ -30,12 +30,7 @@ void Vector3::Transform(const Matrix &m) {
 
 void Vector3::Normalize() {
     const double length = sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
-    if (length == 0) {
-        x = 0;
-        y = 0;
-        z = 0;
-        return;
-    }
+
     x = x / length;
     y = y / length;
     z = z / length;
@@ -81,9 +76,9 @@ Vector3 Vector3::CrossProduct(const Vector3 &w) const {
 }
 
 Vector3 Vector3::operator-(const Vector3 &a) const {
-    return Vector3(x - a.x, y - a.y, z - a.z);
+    return Vector3(x - a.x, y - a.y, z - a.z, w - a.w);
 }
 
 Vector3 Vector3::operator*(const Vector3 &a) const {
-    return Vector3(x * a.x, y * a.y, z * a.z);
+    return Vector3(x * a.x, y * a.y, z * a.z, w * a.w);
 }

@@ -4,15 +4,12 @@ void Camera::Update(double dt) {
 
 }
 
-Camera::Camera(Vector3 eye, Vector3 lookAt) : eye(eye), lookAt(lookAt) {
+Camera::Camera(const Vector3& eye, const Vector3& lookAt) : eye(eye), lookAt(lookAt) {
 
 }
 
 Matrix Camera::GetCameraTMatrix() const {
     // Normaliseer alles voor de transformatie.
-
-
-
     auto dir = eye - lookAt;
     dir.Normalize();
     auto ri = up.CrossProduct(dir);
@@ -24,4 +21,8 @@ Matrix Camera::GetCameraTMatrix() const {
     auto tMatrix = Matrix::getCameraMatrix(ri, upN, dir);
 
     return (origin * tMatrix);
+}
+
+void Camera::Collide(Transform *collider) {
+
 }

@@ -8,8 +8,6 @@ void Transform::transform(const Matrix &m) {
     }
 }
 
-Transform::Transform() = default;
-
 void Transform::draw(SDL_Renderer *renderer) {
     int nulpuntCanvasX = 600 / 2;
     int nulpuntCanvasY = 600 / 2;
@@ -18,6 +16,7 @@ void Transform::draw(SDL_Renderer *renderer) {
     double near = 0.1;
     double far = 100.0;
     double fovY = -120;
+
 
 
     double scale = tan(fovY * 0.5 * M_PI / 180) * near;
@@ -47,7 +46,7 @@ Vector3 Transform::Up() const {
     return Vector3(up->start.x - up->end.x, up->start.y - up->end.y, up->start.z - up->end.z);
 }
 
-Vector3 Transform::Center() {
+Vector3 Transform::Center() const {
     double totalX, totalY, totalZ;
     for (auto &point : verts) {
         totalX += point.x;
@@ -66,5 +65,48 @@ Vector3 Transform::Forward() const {
     diff.Normalize();
     return diff;
 }
+
+Transform::~Transform() {
+    left = nullptr;
+    right = nullptr;
+    up = nullptr;
+    down = nullptr;
+    forward = nullptr;
+}
+
+
+AABB Transform::GetAABB() const {
+    auto min = Vector3(0,0,0);
+    auto max = Vector3(0,0,0);
+
+    for(auto& vert : verts){
+        if(vert.x < min.x) min.x = vert.x;
+        if(vert.y < min.y) min.y = vert.y;
+        if(vert.z < min.z) min.z = vert.z;
+
+        if(vert.x > max.x) max.x = vert.x;
+        if(vert.y > max.y) max.y = vert.y;
+        if(vert.z > max.z) max.z = vert.z;
+    }
+
+    auto box = AABB(min,max);
+    return box;
+}
+
+bool Transform::Collides(const AABB& a, const AABB& b) {
+    int meetingAxis = 0; //
+
+    if ( (b.min.x > a.min.x) && (b.min.x < a.max.x) ) meetingAxis++;
+    if ( (b.min.y > a.min.y) && (b.min.y < a.max.y) ) meetingAxis++;
+    if ( (b.min.z > a.min.z) && (b.min.z < a.max.z) ) meetingAxis++;
+
+    return meetingAxis >= 3;
+}
+
+Transform::Transform() {
+
+}
+
+
 
 

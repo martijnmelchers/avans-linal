@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "Bullet.h"
 #include <cmath>
 #include <iostream>
 
@@ -56,8 +57,13 @@ void Enemy::Pulse(double dt) {
 
     auto origin = Matrix::getTranslationMatrix(-center.x, -center.y, -center.z);
     auto scale = Matrix::getScaleMatrix(Vector3(shift,shift,shift));
-
     auto back = Matrix::getTranslationMatrix(center.x, center.y, center.z);
 
     transform(back * scale * origin);
+}
+
+void Enemy::Collide(Transform* collider) {
+    if(dynamic_cast<Bullet*>(collider) != nullptr){
+        flagDestroy = true;
+    }
 }

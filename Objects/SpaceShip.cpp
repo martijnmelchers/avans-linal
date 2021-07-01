@@ -1,4 +1,5 @@
 #include "SpaceShip.h"
+#include "Enemy.h"
 
 void SpaceShip::Update(double dt) {
 
@@ -42,4 +43,10 @@ SpaceShip::SpaceShip() {
 
     up = &lines[4];
     forward = &lines[0];
+}
+
+void SpaceShip::Collide(Transform* collider) {
+    if(dynamic_cast<Enemy*>(collider) != nullptr){
+       // flagDestroy = true;
+    }
 }

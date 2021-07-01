@@ -12,7 +12,7 @@ public:
 public:
     Matrix();
 
-    Matrix(double mat[4][4]);
+    Matrix(const double mat[4][4]);
 
     Matrix operator+(const Matrix &m);
 
@@ -30,13 +30,13 @@ public:
     static Matrix getRotationMatrixZ(double degrees);
 
     /* End "M3" */
-    static Matrix getRotationMatrixM1(Vector3 &axis);
+    static Matrix getRotationMatrixM1(const Vector3 &axis);
 
-    static Matrix getRotationMatrixM2(Vector3 &axis);
+    static Matrix getRotationMatrixM2(const Vector3 &axis);
 
-    static Matrix getRotationMatrixM4(Vector3 &axis);
+    static Matrix getRotationMatrixM4(const Vector3 &axis);
 
-    static Matrix getRotationMatrixM5(Vector3 &axis);
+    static Matrix getRotationMatrixM5(const Vector3 &axis);
 
     static Matrix getScaleMatrix(const Vector3 &scale);
 
@@ -44,7 +44,7 @@ public:
 
     static Matrix getCameraMatrix(const Vector3 &right, const Vector3 &up, const Vector3 &direction);
 
-    static Matrix getRotationMatrix(Vector3 &axis, Vector3 &center, const double angle);
+    static Matrix getRotationMatrix(const Vector3 &axis, const Vector3 &center, const double angle);
 
     static Matrix getTranslationMatrix(double tX, double tY, double tZ);
 };

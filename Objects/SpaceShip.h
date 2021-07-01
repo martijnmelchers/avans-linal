@@ -5,13 +5,12 @@
 #include "Transform.h"
 
 class Transform;
-
+class AABB;
 class SpaceShip : public Transform {
 public:
     SpaceShip();
-
     void Update(double dt) override;
-
+    void Collide(Transform* collider) override;
 };
 
 

@@ -12,6 +12,7 @@ public:
 
     void Update(double dt) override;
     void Pulse(double dt);
+    void Collide(Transform* collider) override;
 
 private:
     double time = 0;

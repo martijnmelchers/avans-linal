@@ -17,7 +17,7 @@ Matrix Matrix::operator*(const Matrix &m) {
 }
 
 
-Matrix::Matrix(double mat[4][4]) {
+Matrix::Matrix(const double mat[4][4]) {
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
             matrix[j][i] = mat[j][i];
@@ -25,7 +25,7 @@ Matrix::Matrix(double mat[4][4]) {
     }
 }
 
-Matrix Matrix::getTranslationMatrix(double tX, double tY, double tZ) {
+Matrix Matrix::getTranslationMatrix(double tX, double tY, double tZ)  {
     double m[4][4];
     m[0][0] = 1.0;
     m[0][1] = 0.0;
@@ -78,7 +78,7 @@ Matrix Matrix::operator*=(const Matrix &m) {
 
 
 // Draai axis naar het xy vlak om y heen.
-Matrix Matrix::getRotationMatrixM1(Vector3 &axis) {
+Matrix Matrix::getRotationMatrixM1(const Vector3 &axis) {
     double newMatrix[4][4];
     // Bereken de hoek die we moeten draaien om y heen.
     // XZ Line
@@ -128,7 +128,7 @@ Matrix Matrix::getRotationMatrixM1(Vector3 &axis) {
 
 
 // Draai axis naar x toe om z heen.
-Matrix Matrix::getRotationMatrixM2(Vector3 &axis) {
+Matrix Matrix::getRotationMatrixM2(const Vector3 &axis) {
     double newMatrix[4][4];
 
     double XZ = sqrt(pow(axis.x, 2) + pow(axis.z, 2));
@@ -155,7 +155,7 @@ Matrix Matrix::getRotationMatrixM2(Vector3 &axis) {
 }
 
 // Draai axis terug naar het xy vlak om z.
-Matrix Matrix::getRotationMatrixM4(Vector3 &axis) {
+Matrix Matrix::getRotationMatrixM4(const Vector3 &axis) {
     double newMatrix[4][4];
 
     double XZ = sqrt(pow(axis.x, 2) + pow(axis.z, 2));
@@ -182,7 +182,7 @@ Matrix Matrix::getRotationMatrixM4(Vector3 &axis) {
 }
 
 // Draai axis terug naar originele positie om y.
-Matrix Matrix::getRotationMatrixM5(Vector3 &axis) {
+Matrix Matrix::getRotationMatrixM5(const Vector3 &axis) {
     double newMatrix[4][4];
 
     double XZ = sqrt(pow(axis.x, 2) + pow(axis.z, 2));
@@ -225,7 +225,7 @@ Matrix Matrix::getRotationMatrixM5(Vector3 &axis) {
     return newMatrix;
 }
 
-Matrix Matrix::getRotationMatrix(Vector3 &axis, Vector3 &center, const double angle) {
+Matrix Matrix::getRotationMatrix(const Vector3 &axis, const Vector3 &center, const double angle) {
     Matrix origin = Matrix::getTranslationMatrix(-center.x, -center.y, -center.z);
 
     Matrix m1 = Matrix::getRotationMatrixM1(axis);
