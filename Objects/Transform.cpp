@@ -47,7 +47,7 @@ Vector3 Transform::Up() const {
 }
 
 Vector3 Transform::Center() const {
-    double totalX, totalY, totalZ;
+    double totalX= 0, totalY = 0, totalZ = 0;
     for (auto &point : verts) {
         totalX += point.x;
         totalY += point.y;

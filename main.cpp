@@ -201,6 +201,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
 
         if(inputEnabled){
+
             camera.eye = Vector3(0,0,0);
             camera.lookAt = Vector3(0,0,-1);
             camera.eye.Transform(cameraMatrixMan);

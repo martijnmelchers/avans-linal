@@ -17,6 +17,7 @@ public:
     Matrix operator+(const Matrix &m);
 
     Matrix operator*(const Matrix &m);
+    Matrix operator*(const double &m);
 
     Matrix operator*=(const Matrix &m);
 

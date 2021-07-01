@@ -340,5 +340,17 @@ Matrix Matrix::getScaleMatrix(const Vector3 &scale) {
     return Matrix(newMatrix);
 }
 
+Matrix Matrix::operator*(const double &m) {
+    double newMatrix[4][4];
+
+    for (int x = 0; x < 4; x++) {
+        for (int y = 0; y < 4; y++) {
+            newMatrix[x][y] = matrix[x][y] * m;
+
+        }
+    }
+    return Matrix(newMatrix);
+}
+
 
 

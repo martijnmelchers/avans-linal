@@ -56,8 +56,6 @@ Vector3::Vector3(const double x, const double y, const double z, const double w)
 
 // Calculate Dot product from current vector and the given.
 double Vector3::DotProduct(const Vector3 &m) const {
-    double x = x * m.x + y * m.y + z * m.z;
-
     double aLength = (pow(x, 2) + pow(y, 2) + pow(z, 2));
     double bLength = (pow(m.x, 2) + pow(m.y, 2) + pow(m.z, 2));
 
@@ -81,4 +79,8 @@ Vector3 Vector3::operator-(const Vector3 &a) const {
 
 Vector3 Vector3::operator*(const Vector3 &a) const {
     return Vector3(x * a.x, y * a.y, z * a.z, w * a.w);
+}
+
+bool Vector3::operator==(const Vector3 &a) const {
+    return x == a.x && y == a.y && z == a.z && w == a.w;
 }
