@@ -61,4 +61,10 @@ Vector3 Transform::Center() {
     return center;
 }
 
+Vector3 Transform::Forward() const {
+    auto diff = forward->end - forward->start;
+    diff.Normalize();
+    return diff;
+}
+
 

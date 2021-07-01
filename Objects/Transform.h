@@ -12,6 +12,7 @@ protected:
     Line* down{};
     Line* left{};
     Line* right{};
+    Line* forward{};
 public:
     Transform();
     void transform(const Matrix &m);
@@ -19,4 +20,8 @@ public:
     virtual void Update(double dt) = 0;
     Vector3 Center();
     Vector3 Up() const;
+    Vector3 Down() const;
+    Vector3 Left() const;
+    Vector3 Right() const;
+    Vector3 Forward() const;
 };

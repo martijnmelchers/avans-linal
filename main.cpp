@@ -116,7 +116,8 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
 
                         case SDLK_LSHIFT: {
-                            auto m = Matrix::getTranslationMatrix(0, 0, -1);
+                            auto axis = spaceShip.Forward();
+                            auto m = Matrix::getTranslationMatrix(axis.x, axis.y,axis.z);
                             spaceShip.transform(m);
                             break;
                         }
