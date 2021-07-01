@@ -4,21 +4,8 @@
 
 void Enemy::Update(double dt) {
     time += dt;
-    scaled = false;
-    if (!scaled) {
-        double shift = 1 * sin(1 * time + 0.5);
 
-        auto center = Center();
-        auto origin = Matrix::getTranslationMatrix(-center.x, -center.y, -center.z);
-        auto scale = Matrix::getScaleMatrix(Vector3(shift, shift, shift));
-
-        auto back = Matrix::getTranslationMatrix(center.x, center.y, center.z);
-
-        //   transform(scale);
-
-        scaled = true;
-    }
-
+    Pulse(dt);
 }
 
 Enemy::Enemy() {
@@ -51,4 +38,26 @@ Enemy::Enemy() {
 
 
     up = &lines[4];
+}
+
+
+// Pulses the entity in a sine wave.
+void Enemy::Pulse(double dt) {
+    auto center = Center();
+    if(shift != 0){
+        auto resetShift = 1/shift;
+        auto resetScale = Matrix::getScaleMatrix(Vector3(resetShift, resetShift, resetShift));
+        auto resetBack = Matrix::getTranslationMatrix(center.x, center.y, center.z);
+        auto resetOrigin = Matrix::getTranslationMatrix(-center.x, -center.y, -center.z);
+
+        transform(resetBack * resetScale * resetOrigin);
+    }
+    shift = 1 * sin(0.0005 * time + 0.5) + 1.2;
+
+    auto origin = Matrix::getTranslationMatrix(-center.x, -center.y, -center.z);
+    auto scale = Matrix::getScaleMatrix(Vector3(shift,shift,shift));
+
+    auto back = Matrix::getTranslationMatrix(center.x, center.y, center.z);
+
+    transform(back * scale * origin);
 }

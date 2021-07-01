@@ -13,7 +13,7 @@ Vector3 Vector3::operator-(const double &a) const {
     return Vector3(x - a, y - a, z - a);
 }
 
-Vector3::Vector3(double x, double y, double z) : x(x), y(y), z(z) {
+Vector3::Vector3(const double x, const double y, const double z) : x(x), y(y), z(z) {
     w = 1;
 }
 
@@ -54,7 +54,7 @@ Vector3 Vector3::GetPerspective(const Matrix &perspectiveMatrix) const {
     return Vector3(nx, ny, nz, nw);
 }
 
-Vector3::Vector3(double x, double y, double z, double w) : x(x), y(y), z(z), w(w) {
+Vector3::Vector3(const double x, const double y, const double z, const double w) : x(x), y(y), z(z), w(w) {
 
 }
 

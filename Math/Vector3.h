@@ -5,8 +5,8 @@ class Matrix;
 class Vector3 {
 public:
     double x, y, z, w;
-    Vector3(double x, double y, double z);
-    Vector3(double x, double y, double z, double w);
+    Vector3(const double x, const double y, const double z);
+    Vector3(const double x, const double y, const double z, const double w);
     Vector3 operator+(const Vector3 &a) const;
     Vector3 operator*(const Vector3 &a) const;
     Vector3 operator* (const double &a) const;

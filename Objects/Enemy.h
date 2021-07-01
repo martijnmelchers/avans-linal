@@ -11,11 +11,11 @@ public:
     Enemy();
 
     void Update(double dt) override;
+    void Pulse(double dt);
 
 private:
     double time = 0;
-    bool scaled = false;
-    Vector3 originalCenter = this->Center();
+    double shift = 0;
 };
 
 

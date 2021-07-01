@@ -22,12 +22,13 @@ void Transform::draw(SDL_Renderer *renderer) {
 
     double scale = tan(fovY * 0.5 * M_PI / 180) * near;
 
-
     for (auto &line: lines) {
         auto perspective = Matrix::getPerspectiveMatrix(far, near, scale);
 
         auto startP = line.start.GetPerspective(perspective);
         auto endP = line.end.GetPerspective(perspective);
+
+        SDL_RenderDrawPoint(renderer, Center().GetPerspective(perspective).x, Center().GetPerspective(perspective).y);
 
         if ((startP.w) > 0 && (endP.w > 0)) {
 
