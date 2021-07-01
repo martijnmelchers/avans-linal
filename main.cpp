@@ -13,6 +13,8 @@
 #include "Objects/SpaceShip.h"
 #include "windows.h"
 #include "Objects/Camera.h"
+#include "Objects/Enemy.h"
+
 
 int WINAPI WinMain(HINSTANCE hInstance,
                    HINSTANCE hPrevInstance,
@@ -22,7 +24,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
     SDL_Init(SDL_INIT_VIDEO);
 
     SDL_Window *window = SDL_CreateWindow(
-            "SDL2Test",
+            "Sascha & Martijn UNREAL ENGINE",
             SDL_WINDOWPOS_UNDEFINED,
             SDL_WINDOWPOS_UNDEFINED,
             600,
@@ -36,8 +38,9 @@ int WINAPI WinMain(HINSTANCE hInstance,
     SDL_RenderPresent(renderer);
 
     auto spaceShip = SpaceShip();
+    auto enemy = Enemy();
 
-    std::vector<Transform*> objects = {&spaceShip};
+    std::vector<Transform*> objects = {&spaceShip, &enemy};
 
     bool active = true;
     SDL_Event sdlEvent;
@@ -46,11 +49,16 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
     Matrix cameraMatrixMan = Matrix();
 
+    UINT NOW = SDL_GetPerformanceCounter();
+    UINT LAST = 0;
+    double deltaTime = 0;
     while(active){
         SDL_SetRenderDrawColor(renderer, 0,0 , 0, SDL_ALPHA_OPAQUE);
         SDL_RenderClear(renderer);
         bool inputEnabled = false;
-
+        LAST = NOW;
+        NOW = SDL_GetPerformanceCounter();
+        deltaTime = ((NOW - LAST)*1000 / (double)SDL_GetPerformanceFrequency() );
 
         while (SDL_PollEvent(&sdlEvent)) {
 
@@ -179,6 +187,13 @@ int WINAPI WinMain(HINSTANCE hInstance,
             }
         }
 
+
+        //TODO: Generate sinewave and scale enemy to it.
+
+
+
+
+        //Weird hack, but it werks.
         if(inputEnabled){
             camera.eye = Vector3(0,0,0);
             camera.lookAt = Vector3(0,0,-1);
@@ -190,6 +205,8 @@ int WINAPI WinMain(HINSTANCE hInstance,
             if(inputEnabled){
                 transform->transform(camera.getCameraTMatrix());
             }
+
+            transform->Update(deltaTime);
             transform->draw(renderer);
         }
         SDL_RenderPresent(renderer);

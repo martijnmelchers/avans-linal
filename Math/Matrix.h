@@ -28,6 +28,7 @@ public:
     static Matrix getRotationMatrixM4(Vector3 &axis);
     static Matrix getRotationMatrixM5(Vector3 &axis);
 
+    static Matrix getScaleMatrix(const Vector3& scale);
 
     static Matrix getPerspectiveMatrix(double far, double near, double scale);
     static Matrix getCameraMatrix(const Vector3 &right, const Vector3 &up, const Vector3 &direction);
