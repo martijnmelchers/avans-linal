@@ -303,5 +303,14 @@ Matrix::Matrix() {
 
 }
 
+Matrix Matrix::getScaleMatrix(const Vector3& scale) {
+    double newMatrix[4][4];
+    newMatrix[0][0] = scale.x; newMatrix[0][1] = 0;       newMatrix[0][2] = 0; newMatrix[0][3] = 0;
+    newMatrix[1][0] = 0;       newMatrix[1][1] = scale.y; newMatrix[1][2] = 0; newMatrix[1][3] = 0;
+    newMatrix[2][0] = 0;       newMatrix[2][1] = 0;       newMatrix[2][2] = scale.z; newMatrix[2][3] = 0;
+    newMatrix[3][0] = 0;       newMatrix[3][1] = 0;       newMatrix[3][2] = 0; newMatrix[3][3] = 1;
+    return Matrix(newMatrix);
+}
+
 
 
