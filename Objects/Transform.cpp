@@ -1,24 +1,18 @@
-//
-// Created by sasch on 23/06/2021.
-//
-
 #include "Transform.h"
 #include <SDL.h>
 #include <cmath>
 
 void Transform::transform(const Matrix &m) {
-    for(auto & vert : verts){
+    for (auto &vert : verts) {
         vert.Transform(m);
     }
 }
 
-Transform::Transform() {
+Transform::Transform() = default;
 
-}
-
-void Transform::draw(SDL_Renderer* renderer) {
-    int nulpuntCanvasX = 600/2;
-    int nulpuntCanvasY = 600/2;
+void Transform::draw(SDL_Renderer *renderer) {
+    int nulpuntCanvasX = 600 / 2;
+    int nulpuntCanvasY = 600 / 2;
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
 
     double near = 0.1;
@@ -26,31 +20,24 @@ void Transform::draw(SDL_Renderer* renderer) {
     double fovY = -120;
 
 
-
     double scale = tan(fovY * 0.5 * M_PI / 180) * near;
 
 
-    for(auto& line: lines){
+    for (auto &line: lines) {
         auto perspective = Matrix::getPerspectiveMatrix(far, near, scale);
 
         auto startP = line.start.GetPerspective(perspective);
         auto endP = line.end.GetPerspective(perspective);
 
-        if((startP.w) > 0 && (endP.w > 0)){
+        if ((startP.w) > 0 && (endP.w > 0)) {
 
             int startX = int((startP.x) / startP.w * nulpuntCanvasX);
-            int startY = int((startP.y) / startP.w *  nulpuntCanvasY);
+            int startY = int((startP.y) / startP.w * nulpuntCanvasY);
             int endX = int((endP.x) / endP.w * nulpuntCanvasX);
             int endY = int((endP.y) / endP.w * nulpuntCanvasY);
 
-
-
-//            int startX = int(startP.x/startP.w*600/startP.w);
-//            int startY = int(startP.y/startP.w*600/startP.w);
-//            int endX = int(endP.x/endP.w*600/endP.w);
-//            int endY = int(endP.y/endP.w*600/endP.w);
-
-            SDL_RenderDrawLine(renderer, nulpuntCanvasX + startX, nulpuntCanvasY - startY, nulpuntCanvasX + endX, nulpuntCanvasY - endY);
+            SDL_RenderDrawLine(renderer, nulpuntCanvasX + startX, nulpuntCanvasY - startY, nulpuntCanvasX + endX,
+                               nulpuntCanvasY - endY);
         }
     }
 }
@@ -61,13 +48,14 @@ Vector3 Transform::Up() const {
 
 Vector3 Transform::Center() {
     double totalX, totalY, totalZ;
-    for(auto& point : verts){
+    for (auto &point : verts) {
         totalX += point.x;
         totalY += point.y;
         totalZ += point.z;
     }
 
-    Vector3 center = Vector3(totalX/verts.size(), totalY/verts.size(), totalZ/verts.size());
+    auto size = (double) verts.size();
+    Vector3 center = Vector3(totalX / size, totalY / size, totalZ / size);
 
     return center;
 }

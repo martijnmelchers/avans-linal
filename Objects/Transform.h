@@ -1,6 +1,3 @@
-//
-// Created by sasch on 23/06/2021.
-//
 #pragma once
 #include <vector>
 #include <SDL.h>
@@ -11,10 +8,10 @@ class Transform {
 protected:
     std::vector<Vector3> verts;
     std::vector<Line> lines;
-    Line* up;
-    Line* down;
-    Line* left;
-    Line* right;
+    Line* up{};
+    Line* down{};
+    Line* left{};
+    Line* right{};
 public:
     Transform();
     void transform(const Matrix &m);

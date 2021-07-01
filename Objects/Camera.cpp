@@ -1,7 +1,3 @@
-//
-// Created by sasch on 25/06/2021.
-//
-
 #include "Camera.h"
 
 void Camera::Update(double dt) {
@@ -12,14 +8,14 @@ Camera::Camera(Vector3 eye, Vector3 lookAt) : eye(eye), lookAt(lookAt) {
 
 }
 
-Matrix Camera::getCameraTMatrix() {
+Matrix Camera::GetCameraTMatrix() const {
     // Normaliseer alles voor de transformatie.
 
 
 
     auto dir = eye - lookAt;
     dir.Normalize();
-    auto ri  = up.CrossProduct(dir);
+    auto ri = up.CrossProduct(dir);
     ri.Normalize();
     auto upN = dir.CrossProduct(ri);
     upN.Normalize();

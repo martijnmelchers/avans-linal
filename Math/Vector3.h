@@ -1,6 +1,3 @@
-//
-// Created by sasch on 22/06/2021.
-//
 #pragma once
 #include "Matrix.h"
 

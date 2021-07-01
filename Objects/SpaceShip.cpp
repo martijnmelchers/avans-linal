@@ -1,7 +1,3 @@
-//
-// Created by sasch on 23/06/2021.
-//
-
 #include "SpaceShip.h"
 
 void SpaceShip::Update(double dt) {
@@ -13,8 +9,8 @@ SpaceShip::SpaceShip() {
     // Cube from example.
     verts.emplace_back(Vector3(10, 10, -50));
     verts.emplace_back(Vector3(10, 10, -70));
-    verts.emplace_back(Vector3(-10, 10,-70));
-    verts.emplace_back(Vector3(-10, 10,-50));
+    verts.emplace_back(Vector3(-10, 10, -70));
+    verts.emplace_back(Vector3(-10, 10, -50));
 
 
     verts.emplace_back(Vector3(10, -10, -50));
@@ -23,7 +19,6 @@ SpaceShip::SpaceShip() {
     verts.emplace_back(Vector3(-10, -10, -50));
 
     verts.emplace_back(Vector3(0, 50, -60));
-
 
 
     lines.emplace_back(Line(verts[0], verts[1]));
@@ -46,6 +41,5 @@ SpaceShip::SpaceShip() {
     lines.emplace_back(Line(verts[3], verts[8]));
 
 
-
-    up =  &lines[4];
+    up = &lines[4];
 }
