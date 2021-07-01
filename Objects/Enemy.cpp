@@ -18,7 +18,7 @@ void Enemy::Update(double dt) {
 
         auto back = Matrix::getTranslationMatrix(center.x, center.y, center.z);
 
-        transform(scale);
+     //   transform(scale);
 
         scaled =true;
     }
