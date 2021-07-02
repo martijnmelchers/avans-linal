@@ -1,7 +1,3 @@
-//
-// Created by sasch on 01/07/2021.
-//
-
 #ifndef LINALG_AABB_H
 #define LINALG_AABB_H
 

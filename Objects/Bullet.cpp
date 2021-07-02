@@ -1,7 +1,3 @@
-//
-// Created by sasch on 01/07/2021.
-//
-
 #include <iostream>
 #include "Bullet.h"
 #include "SpaceShip.h"

@@ -1,7 +1,3 @@
-//
-// Created by sasch on 01/07/2021.
-//
-
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 #include "catch_amalgamated.hpp"
 #include "../Objects/Enemy.h"
