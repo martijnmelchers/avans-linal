@@ -11,6 +11,7 @@
 class AABB {
 public:
     AABB(const Vector3&min, const Vector3& max);
+    bool operator==(const AABB &a) const;
     Vector3 max;
     Vector3 min;
 };

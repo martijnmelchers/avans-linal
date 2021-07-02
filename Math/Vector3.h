@@ -9,6 +9,7 @@ public:
     Vector3(const double x, const double y, const double z, const double w);
     Vector3 operator+(const Vector3 &input) const;
     Vector3 operator*(const Vector3 &input) const;
+    bool operator==(const Vector3 &a) const;
     Vector3 operator* (const double &input) const;
     Vector3 operator- (const double &input) const;
     Vector3 operator- (const Vector3 &a) const;
