@@ -47,4 +47,5 @@ public:
     static Matrix getRotationMatrix(const Vector3 &axis, const Vector3 &center, const double angle);
 
     static Matrix getTranslationMatrix(double tX, double tY, double tZ);
+    static Matrix getOneMatrix();
 };

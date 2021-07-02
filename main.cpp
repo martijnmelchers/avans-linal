@@ -3,7 +3,7 @@
 #include <SDL_render.h>
 #include <SDL_video.h>
 #include <SDL_main.h>
-
+#include <iomanip>
 #define SDL_MAIN_HANDLED
 
 #include <windows.h>
@@ -27,8 +27,8 @@ int WINAPI WinMain(HINSTANCE hInstance,
             "Sascha & Martijn UNREAL ENGINE",
             SDL_WINDOWPOS_UNDEFINED,
             SDL_WINDOWPOS_UNDEFINED,
-            600,
-            600,
+            1000,
+            1000,
             0
     );
 
@@ -39,7 +39,6 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
     auto spaceShip = SpaceShip();
     auto enemy = Enemy();
-
     std::vector<Transform *> objects = {&spaceShip, &enemy};
 
     bool active = true;
@@ -54,23 +53,16 @@ int WINAPI WinMain(HINSTANCE hInstance,
     while (active) {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
         SDL_RenderClear(renderer);
-        bool inputEnabled = false;
+        bool transformWorld = false;
         LAST = NOW;
         NOW = SDL_GetPerformanceCounter();
         deltaTime = ((NOW - LAST) * 1000 / (double) SDL_GetPerformanceFrequency());
 
-        double matrixone[4][4];
-        matrixone[0][0] = 1; matrixone[0][1] = 0; matrixone[0][2] = 0; matrixone[0][3] = 0;
-        matrixone[1][0] = 0;   matrixone[1][1] = 1;   matrixone[1][2] = 0;  matrixone[1][3] = 0;
-        matrixone[2][0] = 0;  matrixone[2][1] = 0;  matrixone[2][2] = 1;   matrixone[2][3] = 0;
-        matrixone[3][0] = 0; matrixone[3][1] = 0; matrixone[3][2] = 0;matrixone[3][3] = 1;
-
-        auto cameraMatrixMan = Matrix(matrixone);
+        auto cameraMatrixMan = Matrix::getOneMatrix();
         while (SDL_PollEvent(&sdlEvent)) {
             //TODO: Move controls
-
-
             switch (sdlEvent.type) {
+
                 case SDL_QUIT:
                     active = false;
                     break;
@@ -80,31 +72,31 @@ int WINAPI WinMain(HINSTANCE hInstance,
                     switch (sdlEvent.key.keysym.sym) {
                         case SDLK_LEFT: {
                             cameraMatrixMan = Matrix::getTranslationMatrix(1, 0, 0);
-                            inputEnabled = true;
+                            transformWorld = true;
                             break;
                         }
 
                         case SDLK_RIGHT: {
                             cameraMatrixMan = Matrix::getTranslationMatrix(-1, 0, 0);
-                            inputEnabled = true;
+                            transformWorld = true;
                             break;
                         }
 
                         case SDLK_UP: {
                             cameraMatrixMan = Matrix::getTranslationMatrix(0, 0, -1);
-                            inputEnabled = true;
+                            transformWorld = true;
                             break;
                         }
 
                         case SDLK_DOWN: {
                             cameraMatrixMan = Matrix::getTranslationMatrix(0, 0, 1);
-                            inputEnabled = true;
+                            transformWorld = true;
                             break;
                         }
 
                         case SDLK_PAGEUP: {
                             cameraMatrixMan = Matrix::getTranslationMatrix(0, -1, 0);
-                            inputEnabled = true;
+                            transformWorld = true;
                             break;
                         }
 
@@ -118,14 +110,14 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
                         case SDLK_PAGEDOWN: {
                             cameraMatrixMan = Matrix::getTranslationMatrix(0, 1, 0);
-                            inputEnabled = true;
+                            transformWorld = true;
                             break;
                         }
 
 
                         case SDLK_LSHIFT: {
                             auto axis = spaceShip.Forward();
-                            auto m = Matrix::getTranslationMatrix(axis.x, axis.y,axis.z);
+                            auto m = Matrix::getTranslationMatrix(axis.x, axis.y, axis.z);
                             spaceShip.transform(m);
                             break;
                         }
@@ -174,7 +166,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
                             break;
                         }
                         case SDLK_0: {
-                            auto* bullet = new Bullet(spaceShip.Center(), spaceShip.Forward(), enemy);
+                            auto *bullet = new Bullet(spaceShip.Center(), spaceShip.Forward(), enemy);
                             objects.emplace_back(bullet);
                             break;
                         }
@@ -200,27 +192,27 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
 
 
-        if(inputEnabled){
-            camera.eye = Vector3(0,0,0);
-            camera.lookAt = Vector3(0,0,-1);
+        if (transformWorld) {
+            camera.eye = Vector3(0, 0, 0);
+            camera.lookAt = Vector3(0, 0, -1);
             camera.eye.Transform(cameraMatrixMan);
             camera.lookAt.Transform(cameraMatrixMan);
         }
 
 
-        for(auto it = objects.begin(); it != objects.end();){
-            Transform* transform = *it;
+        for (auto it = objects.begin(); it != objects.end();) {
+            Transform *transform = *it;
 
 
-            if(inputEnabled){
+            if (transformWorld) {
                 transform->transform(camera.GetCameraTMatrix());
             }
 
             transform->Update(deltaTime);
-            for(auto* collider : objects){
-                if(collider != transform){
+            for (auto *collider : objects) {
+                if (collider != transform) {
                     bool collides = Transform::Collides(transform->GetAABB(), collider->GetAABB());
-                    if(collides){
+                    if (collides) {
                         transform->Collide(collider);
                         collider->Collide(transform);
                     }
@@ -229,23 +221,21 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
             transform->draw(renderer);
 
-            if(transform->flagDestroy){
-                if(dynamic_cast<SpaceShip*>(transform) == nullptr){
-                  it = objects.erase(it);
-                }
-                else{
+            if (transform->flagDestroy) {
+                if (dynamic_cast<SpaceShip *>(transform) == nullptr) {
+                    it = objects.erase(it);
+                } else {
                     active = true;
                 }
-            }
-            else{
-              it++;
+            } else {
+                it++;
             }
         }
 
         SDL_RenderPresent(renderer);
     }
 
-    for(Transform* transform : objects){
+    for (Transform *transform : objects) {
         delete transform;
     }
     objects.clear();

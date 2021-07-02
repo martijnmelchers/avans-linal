@@ -9,8 +9,8 @@ void Transform::transform(const Matrix &m) {
 }
 
 void Transform::draw(SDL_Renderer *renderer) {
-    int nulpuntCanvasX = 600 / 2;
-    int nulpuntCanvasY = 600 / 2;
+    int nulpuntCanvasX = 1000 / 2;
+    int nulpuntCanvasY = 1000 / 2;
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
 
     double near = 0.1;
