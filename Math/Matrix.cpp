@@ -374,5 +374,40 @@ Matrix Matrix::operator*(const double &m) {
     return Matrix(newMatrix);
 }
 
+Matrix Matrix::operator-(const Matrix &m) {
+    double newMatrix[4][4];
+
+    for (int x = 0; x < 4; x++) {
+        for (int y = 0; y < 4; y++) {
+            newMatrix[x][y] = matrix[x][y] - matrix[x][y];
+        }
+    }
+    return Matrix(newMatrix);
+}
+
+bool Matrix::operator==(const Matrix &m) const {
+    bool same = true;
+
+    for (int x = 0; x < 4; x++) {
+        for (int y = 0; y < 4; y++) {
+            if(matrix[x][y] != m.matrix[x][y]){
+                same=false;
+            }
+        }
+    }
+    return same;
+}
+
+Matrix Matrix::operator+(const Matrix &m) {
+    double newMatrix[4][4];
+
+    for (int x = 0; x < 4; x++) {
+        for (int y = 0; y < 4; y++) {
+            newMatrix[x][y] = matrix[x][y] + matrix[x][y];
+        }
+    }
+    return Matrix(newMatrix);
+}
+
 
 

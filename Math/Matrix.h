@@ -14,7 +14,8 @@ public:
 
     Matrix(const double mat[4][4]);
 
-    Matrix operator+(const Matrix &m);
+    bool operator==(const Matrix &m) const;
+    Matrix operator+(const Matrix &m) ;
 
     Matrix operator*(const Matrix &m);
     Matrix operator*(const double &m);

@@ -15,7 +15,7 @@ project(testlinalg)
 
 add_subdirectory(${SDL2_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}/sdl)
 
-add_executable(testlinalg ../Math/Line.cpp ../Math/Line.h ../Math/Matrix.cpp ../Math/Matrix.h ../Math/Vector3.h ../Math/Vector3.cpp ../Objects/Transform.cpp ../Objects/Transform.h ../Objects/SpaceShip.cpp ../Objects/SpaceShip.h ../Objects/Camera.cpp ../Objects/Camera.h ../Objects/Enemy.cpp ../Objects/Enemy.h ../Objects/Bullet.cpp ../Objects/Bullet.h ../Objects/AABB.cpp ../Objects/AABB.h catch_amalgamated.cpp catch_amalgamated.hpp Example.cpp )
+add_executable(testlinalg ../Math/Line.cpp ../Math/Line.h ../Math/Matrix.cpp ../Math/Matrix.h ../Math/Vector3.h ../Math/Vector3.cpp ../Objects/Transform.cpp ../Objects/Transform.h ../Objects/SpaceShip.cpp ../Objects/SpaceShip.h ../Objects/Camera.cpp ../Objects/Camera.h ../Objects/Enemy.cpp ../Objects/Enemy.h ../Objects/Bullet.cpp ../Objects/Bullet.h ../Objects/AABB.cpp ../Objects/AABB.h catch_amalgamated.cpp catch_amalgamated.hpp MatrixTests.cpp)
 
 target_link_libraries(testlinalg SDL2)
 
