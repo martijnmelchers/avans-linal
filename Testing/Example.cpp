@@ -43,3 +43,15 @@ TEST_CASE( "Matrix multiplication" ) {
     REQUIRE(enemy.Center() == oldCenter);
 }
 
+TEST_CASE( "Matrix Rotation" ) {
+
+    auto enemy = Enemy();
+    auto oldCenter = enemy.Center();
+    auto rotation = Matrix::getRotationMatrix(Vector3(0,1,0), oldCenter, 180);
+    enemy.transform(rotation);
+
+    // Some rounding issue.
+    AABB x = AABB(Vector3(-10,-10,120), Vector3(10.000000000000002, 10,0));
+    REQUIRE(enemy.GetAABB() == x);
+}
+
