@@ -7,20 +7,20 @@ void SpaceShip::Update(double dt) {
 
 SpaceShip::SpaceShip() {
     // Cube from example.
-    verts.emplace_back(Vector3(10, 10, -50));
-    verts.emplace_back(Vector3(10, 10, -70));
-    verts.emplace_back(Vector3(-10, 10, -70));
-    verts.emplace_back(Vector3(-10, 10, -50));
+    verts.emplace_back(Vector3(10, 10, -10));
+    verts.emplace_back(Vector3(10, 10, -30));
+    verts.emplace_back(Vector3(-10, 10, -30));
+    verts.emplace_back(Vector3(-10, 10, -10));
 
 
-    verts.emplace_back(Vector3(10, -10, -50));
-    verts.emplace_back(Vector3(10, -10, -70));
-    verts.emplace_back(Vector3(-10, -10, -70));
-    verts.emplace_back(Vector3(-10, -10, -50));
+    verts.emplace_back(Vector3(10, -10, -10));
+    verts.emplace_back(Vector3(10, -10, -30));
+    verts.emplace_back(Vector3(-10, -10, -30));
+    verts.emplace_back(Vector3(-10, -10, -10));
 
-    verts.emplace_back(Vector3(0, 0, -90));
-    verts.emplace_back(Vector3(-50, 0, -60));
-    verts.emplace_back(Vector3(50, 0, -60));
+    verts.emplace_back(Vector3(0, 0, -30));
+    verts.emplace_back(Vector3(-50, 0, -20));
+    verts.emplace_back(Vector3(50, 0, -40));
 
 
     lines.emplace_back(Line(verts[0], verts[1])); //bottom

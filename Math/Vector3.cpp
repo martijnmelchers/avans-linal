@@ -53,16 +53,9 @@ Vector3::Vector3(const double x, const double y, const double z, const double w)
 
 }
 
-
-// Calculate Dot product from current vector and the given.
+// Calculate Dot product from current vector(this) and the given.
 double Vector3::DotProduct(const Vector3 &m) const {
-    double aLength = (pow(x, 2) + pow(y, 2) + pow(z, 2));
-    double bLength = (pow(m.x, 2) + pow(m.y, 2) + pow(m.z, 2));
-
-    double ab = sqrt(aLength + bLength);
-
-    double angle = acos(ab) / 180.0 * M_PI;
-    return angle;
+    return x * m.x + y * m.y + z * m.z;
 }
 
 Vector3 Vector3::CrossProduct(const Vector3 &input) const {

@@ -225,7 +225,9 @@ int WINAPI WinMain(HINSTANCE hInstance,
                 if (dynamic_cast<SpaceShip *>(transform) == nullptr) {
                     it = objects.erase(it);
                 } else {
-                    active = true;
+
+                    active =false;
+                    break;
                 }
             } else {
                 it++;

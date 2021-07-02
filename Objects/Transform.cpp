@@ -94,13 +94,9 @@ AABB Transform::GetAABB() const {
 }
 
 bool Transform::Collides(const AABB& a, const AABB& b) {
-    int meetingAxis = 0; //
-
-    if ( (b.min.x > a.min.x) && (b.min.x < a.max.x) ) meetingAxis++;
-    if ( (b.min.y > a.min.y) && (b.min.y < a.max.y) ) meetingAxis++;
-    if ( (b.min.z > a.min.z) && (b.min.z < a.max.z) ) meetingAxis++;
-
-    return meetingAxis >= 3;
+    return (a.min.x <= b.max.x && a.max.x >= b.min.x) &&
+           (a.min.y <= b.max.y && a.max.y >= b.min.y) &&
+           (a.min.z <= b.max.z && a.max.z >= b.min.z);
 }
 
 Transform::Transform() {

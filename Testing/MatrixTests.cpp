@@ -82,4 +82,11 @@ TEST_CASE("Matrix addition"){
 }
 
 
+TEST_CASE("DotProduct"){
+    auto forward = Vector3(0,0,-1);
+    auto backward = Vector3(0,0,1);
+
+    REQUIRE(forward.DotProduct(backward) == -1);
+}
+
 
